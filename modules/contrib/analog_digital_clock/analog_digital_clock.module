@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * This file is used to write hooks that used in the module.
+ */
+
+/**
+ * Hook_theme used to add theme to custom block.
+ */
+function analog_digital_clock_theme() {
+
+  return [
+    'analogDigitalLightDarkSkin' => [
+      'variables' => ['analog_digital_clock_selected_skin' => NULL],
+    ],
+  ];
+}

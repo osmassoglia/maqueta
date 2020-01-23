@@ -1,0 +1,7 @@
+maqueta.examenpass:
+  path: '/maquetaaction/examen'
+  defaults:
+    _controller: '\Drupal\maqueta\Controller\MaquetaController::examenPass'
+    _title: 'Examen Change Status'
+  requirements:
+    _permission: 'examen change status'

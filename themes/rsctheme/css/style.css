@@ -1,0 +1,194 @@
+@import url("//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+/**
+ * If using a CSS pre-processor, tell it to overwrite this file. If not, place
+ * your custom CSS modifications here.
+ */
+header{
+
+}
+header a{
+
+  font-weight:bold;
+}
+
+.statics-items{
+
+}
+.statics-item{
+
+
+}
+aside section h2.block-title {
+  margin-top:0px;
+}
+
+aside .block{
+
+  min-height: 20px;
+  padding: 19px;
+  margin-bottom: 20px;
+  background-color: #f5f5f5;
+  border: 1px solid #e3e3e3;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+
+}
+.noshow{
+  display:none;
+}
+
+
+
+.page-node-type-paciente .field{
+  clear:both;
+}
+
+#edit-field-nomina-0-tablefield-rebuild,
+.form-item-field-nomina-0-caption{
+  display:none;
+}
+.statics-item .statics-item-wrapper{
+  border:1px solid #a7a7a7;
+  margin:0.5em;
+  padding:10px;
+
+}
+.field--name-field-nomina table caption{
+  display:none;
+}
+.tablefield-export-link{
+  display:none;
+}
+
+.table.four .table-cell{
+  width:25%;
+}
+
+.statics-item .content{
+  text-align:left;
+}
+.statics-item .content .number{
+  font-size:2.4em;
+}
+
+#search-block-form{
+  float:right;
+  width:300px;
+}
+.items-front{
+
+}
+.items-front .item {
+  display:inline-block;
+  width:24%;
+  padding:10px;
+}
+.items-front .item .wrapper-item{
+    width:100%;
+    border: 0;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    border-radius: 6px;
+    color: #333;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid #eee;
+    border-radius: .25rem;
+    height:60px;;
+    vertical-align: middle;
+
+    margin:0.3%;
+    padding:5px;
+    text-align:center;
+
+}
+.items-front .item .card-img img{
+  width:32px;
+}
+.items-front .item .card-img{
+    border-radius: 3px;
+    background-color: #999;
+    padding: 10px;
+    margin-top: -20px;
+    margin-right: 15px;
+    float: left;
+        box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(255,152,0,.4);
+        background: linear-gradient(60deg,#ffa726,#fb8c00);
+  }
+.items-front .item span.label{
+  color:#000;
+  font-size:1.2em;
+}
+
+.btn-primary{
+  background-color:#ec6b23 !important;
+}
+.node--view-mode-full .group-footer{
+  padding-top:20px;
+  clear:both;
+}
+.field{
+  padding-bottom:5px;
+}
+.views-exposed-form .form-item {
+  width:32%;
+}
+.views-exposed-form .form-item .control-label{
+    display:block;
+}
+.alignright{
+  text-align: right;
+}
+.field--name-field-contactos .field__label{
+  font-size:1.4em;
+}
+.empty-list{
+  padding:10px;
+  background-color:#e3e3e3;
+  text-align:center;
+  margin-top:5px;
+  margin-bottom:5px;
+}
+.empty-list span{
+  color:#ff0000;
+}
+
+
+@media (min-width:320px) { /* smartphones, iPhone, portrait 480x320 phones */ }
+@media (min-width:481px) { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */ }
+@media (min-width:641px) { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ }
+@media (min-width:961px) {
+  /* tablet, landscape iPad, lo-res laptops ands desktops */
+
+#block-views-block-contactos-block-1{
+  float:right;
+  overflow:hidden;
+  width:30%;
+}
+  aside section h2.block-title{
+    font-size:1.4em;
+    border-bottom:1px solid #e95420;
+    padding-bottom:5px;
+  }
+
+}
+@media (min-width:1025px) {
+  /* big landscape tablets, laptops, and desktops */
+  aside section h2.block-title{
+    font-size:1.4em;
+    border-bottom:1px solid #e95420;
+    padding-bottom:5px;
+  }
+
+}
+@media (min-width:1281px) {
+  /* hi-res laptops and desktops */
+  aside section h2.block-title{
+    font-size:1.4em;
+    border-bottom:1px solid #e95420;
+    padding-bottom:5px;
+  }
+
+}

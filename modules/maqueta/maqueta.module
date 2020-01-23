@@ -1,0 +1,270 @@
+<?php
+
+
+use Drupal\node\NodeInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Access\AccessResult;
+use Drupal\node\Entity\NodeType;
+use \Drupal\Core\Entity\EntityInterface;
+use \Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Mail\MailManagerInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+function maqueta_node_insert(NodeInterface $node)
+{
+    // Set the node title to the node ID and save.
+    if ($node->getTitle() == 'new') {
+        $node->setTitle('Node ' . $node->id());
+        $node->setNewRevision(false);
+        $node->save();
+    }
+    if ($node->getEntityTypeId() == 'node' && $node->getType() == 'paciente') {
+    }
+}
+
+function maqueta_entity_presave(Drupal\Core\Entity\EntityInterface $entity)
+{
+    if ($entity instanceof NodeInterface) {
+        if ($entity->getEntityTypeId() == 'node' && $entity->getType() == 'paciente') {
+            $nm = $entity->field_nombres->value;
+            $app = $entity->field_apellido_paterno->value;
+            $apm = $entity->field_apellido_materno->value;
+            $names = array($nm, $app, $apm);
+
+            $fullname = join(' ', $names);
+            $entity->title->value = $fullname;
+            //ksm($fullname);
+      //kint($form);
+
+      //kint($form);
+        }
+    }
+}
+
+function maqueta_entity_update(Drupal\Core\Entity\EntityInterface $entity)
+{
+
+
+
+  //kint($node->getEntityTypeId());
+  //$node->getType()
+  // if($entity->getEntityTypeId() == 'node' && $entity->getType() == 'paciente'){
+  //
+  //   $nm = $entity->field_nombres->value;
+  //   $app = $entity->field_apellido_paterno->value;
+  //   $apm = $entity->field_apellido_materno->value;
+  //   $names = array($nm, $app, $apm);
+  //
+  //   $fullname = join(' ', $names);
+  //   $entity->title->value = $fullname;
+  //   //ksm($fullname);
+  //   //kint($form);
+  //
+  //   //kint($form);
+  // }
+}
+
+function maqueta_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode)
+{
+    //kint($entity);
+    if ($entity->getEntityTypeId() == 'node' && $entity->getType() == 'examenes') {
+        if ($entity->hasField('field_estado')) {
+            $types = array_column($entity->get('field_estado')->getValue(), 'target_id');
+            //$types = $entity->get('field_forma_de_iniciativa')->getValue();
+            //  ksm($types);
+            if (in_array("41", $types)) {
+                $build['field_estado'] = [
+              '#type' => 'markup',
+              '#markup' => '<a class="btn-sm  btn-primary" href="/maquetaaction/examen?e='.$entity->id().'&a=42&callback=/sala_radiologia">Pasar a Sala de Espera Examen</a>',
+              '#weight' => $build['field_estado']['#weight']+1
+          ];
+            }
+            if (in_array("42", $types)) {
+                $build['field_estado'] = [
+              '#type' => 'markup',
+              '#markup' => '<a class="btn-sm  btn-primary" href="/maquetaaction/examen?e='.$entity->id().'&a=43">Pasar a Examen</a>',
+              '#weight' => $build['field_estado']['#weight']+1
+          ];
+            }
+        }
+    }
+
+    if ($entity->getEntityTypeId() == 'node' && $entity->getType() == 'radiologia') {
+        $ordenid = $entity->field_orden->getString();
+        $nnode = Drupal::entityManager()->getStorage('node')->load($ordenid);
+
+        if ($nnode) {
+            $estate = $nnode->field_estado->getString();
+            if ($estate == 43) {
+                $build['finish'] = [
+                '#type' => 'markup',
+                '#markup' => '<br><div style="margin-top:20px;"><a class="btn-sm  btn-primary" href="/maquetaaction/examen?e='.$nnode->id().'&a=44&callback=/sala_radiologia">Terminar Session Radiologica</a></div>',
+                '#weight' => $build['field_imagenes_radiologicas']['#weight']+1
+            ];
+            }
+        }
+    }
+}
+
+function maqueta_form_node_form_alter(&$form, FormStateInterface $form_state)
+{
+    $node = $form_state->getFormObject()->getEntity();
+    //kint($node->getEntityTypeId());
+    //$node->getType()
+
+    if ($node->getEntityTypeId() == 'node' && $node->getType() == 'paciente') {
+
+
+    //kint($form);
+        $form['title']['widget'][0]['value']['#default_value'] = time();
+        $form['title']['#attributes']['class'][] = 'noshow';
+        //kint($form);
+    }
+
+    if ($node->getEntityTypeId() == 'node' && $node->getType() == 'dispositivos_invasivos') {
+      
+        $form['title']['widget'][0]['value']['#default_value'] = 'di-'.time();
+        $form['title']['#attributes']['class'][] = 'noshow';
+        $form['field_paciente']['#attributes']['class'][] = 'noshow';
+        if (isset($_GET['refid'])) {
+            $node = Drupal::entityManager()->getStorage('node')->load($_GET['refid']);
+            if ($node) {
+                //    kint($form);
+                $form['field_paciente']['widget'][0]['target_id']['#default_value'] = $node;
+        
+                $form['field_paciente'][0]['#default_value'] = $_GET['refid'];
+            }
+        }
+    }
+    if ($node->getEntityTypeId() == 'node' && $node->getType() == 'hospitalizacion') {
+
+        $form['title']['widget'][0]['value']['#default_value'] = 'ho-'.time();
+        $form['title']['#attributes']['class'][] = 'noshow';
+        $form['field_paciente']['#attributes']['class'][] = 'noshow';
+        if (isset($_GET['refid'])) {
+            $node = Drupal::entityManager()->getStorage('node')->load($_GET['refid']);
+            if ($node) {
+                //    kint($form);
+                $form['field_paciente']['widget'][0]['target_id']['#default_value'] = $node;
+        
+                $form['field_paciente'][0]['#default_value'] = $_GET['refid'];
+            }
+        }
+    }
+
+
+    if ($node->getEntityTypeId() == 'node' && $node->getType() == 'radiologia') {
+
+
+    //kint($form);
+        if (!$form['title']['widget'][0]['value']['#default_value']) {
+            $form['title']['widget'][0]['value']['#default_value'] = 'R'.time();
+        }
+        $form['title']['#access'] = false;
+        $form['field_orden']['#access'] = false;
+        //$form['title']['#attributes']['class'][] = 'noshow';
+        if (isset($_GET['refid'])) {
+            $node = Drupal::entityManager()->getStorage('node')->load($_GET['refid']);
+            if ($node) {
+                //    kint($form);
+                $form['field_orden']['widget'][0]['target_id']['#default_value'] = $node;
+                $form['field_orden'][0]['#default_value'] = $_GET['refid'];
+            }
+        }
+    }
+
+    if ($node->getEntityTypeId() == 'node' && $node->getType() == 'atencion') {
+
+
+    //kint($form);
+        if (!$form['title']['widget'][0]['value']['#default_value']) {
+            $form['title']['widget'][0]['value']['#default_value'] = 'A'.time();
+        }
+        $form['title']['#access'] = false;
+        $form['field_paciente']['#access'] = false;
+        //$form['title']['#attributes']['class'][] = 'noshow';
+        if (isset($_GET['refid'])) {
+            $node = Drupal::entityManager()->getStorage('node')->load($_GET['refid']);
+            if ($node) {
+                //    kint($form);
+                $form['field_paciente']['widget'][0]['target_id']['#default_value'] = $node;
+
+                $form['field_paciente'][0]['#default_value'] = $_GET['refid'];
+            }
+        }
+    }
+
+    if ($node->getEntityTypeId() == 'node' && $node->getType() == 'receta') {
+
+
+    //kint($form);
+        if (!$form['title']['widget'][0]['value']['#default_value']) {
+            $form['title']['widget'][0]['value']['#default_value'] = 'R'.time();
+        }
+        $form['title']['#access'] = false;
+        $form['field_paciente']['#access'] = false;
+        $form['field_atencion']['#access'] = false;
+        //$form['title']['#attributes']['class'][] = 'noshow';
+        if (isset($_GET['refid'])) {
+            $nnode = Drupal::entityManager()->getStorage('node')->load($_GET['refid']);
+            if ($nnode) {
+                $pnodevalue = $nnode->field_paciente->getString();
+                $pnode = Drupal::entityManager()->getStorage('node')->load($pnodevalue);
+                $form['field_paciente']['widget'][0]['target_id']['#default_value'] = $pnode;
+
+                $form['field_paciente'][0]['#default_value'] = $pnodevalue;
+
+                $form['field_atencion']['widget'][0]['target_id']['#default_value'] = $nnode;
+
+                $form['field_atencion'][0]['#default_value'] = $_GET['refid'];
+            }
+        }
+    }
+
+    if ($node->getEntityTypeId() == 'node' && $node->getType() == 'examenes') {
+
+
+    //kint($form);
+
+        if (!$form['title']['widget'][0]['value']['#default_value']) {
+            $form['title']['widget'][0]['value']['#default_value'] = 'E'.time();
+        }
+
+        $form['title']['#access'] = false;
+        $form['field_paciente']['#access'] = false;
+        $form['field_atencion']['#access'] = false;
+        //$form['field_estado']['#access'] = False;
+        //$form['title']['#attributes']['class'][] = 'noshow';
+        if (isset($_GET['refid'])) {
+            $nnode = Drupal::entityManager()->getStorage('node')->load($_GET['refid']);
+            if ($nnode) {
+                $pnodevalue = $nnode->field_paciente->getString();
+                $pnode = Drupal::entityManager()->getStorage('node')->load($pnodevalue);
+                $form['field_paciente']['widget'][0]['target_id']['#default_value'] = $pnode;
+
+                $form['field_paciente'][0]['#default_value'] = $pnodevalue;
+
+                $form['field_atencion']['widget'][0]['target_id']['#default_value'] = $nnode;
+
+                $form['field_atencion'][0]['#default_value'] = $_GET['refid'];
+            }
+        }
+        if (isset($_GET['piid'])) {
+            $nnode = Drupal::entityManager()->getStorage('node')->load($_GET['piid']);
+            if ($nnode) {
+                $form['field_paciente']['widget'][0]['target_id']['#default_value'] = $nnode;
+                $form['field_paciente']['#access'] = false;
+                $form['field_paciente'][0]['#default_value'] = $_GET['piid'];
+            }
+        }
+    }
+}
+
+
+function maqueta_node_view_alter(array &$build, Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display)
+{
+    //  if ($entity->bundle() == 'prototipo') {
+    $build['#cache']['max-age'] = 0;
+    \Drupal::service('page_cache_kill_switch')->trigger();
+    //  }
+}

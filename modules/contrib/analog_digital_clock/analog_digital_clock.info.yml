@@ -1,0 +1,11 @@
+name: Analog Digital Clock
+description: Provide Analog and Digital clock in a block.
+# core: 8.x
+type: module
+configure: analog_digital_clock.settings
+
+# Information added by Drupal.org packaging script on 2018-06-18
+version: '8.x-2.0'
+core: '8.x'
+project: 'analog_digital_clock'
+datestamp: 1529302730
